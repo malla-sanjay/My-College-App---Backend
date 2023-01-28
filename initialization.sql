@@ -25,7 +25,8 @@ CREATE TABLE classrooms (
 
 CREATE TABLE capacities (
     capacity_code VARCHAR(50) PRIMARY KEY,
-    no_of_student INT
+    no_of_student INT,
+    colelge_id INT REFERENCES college_acc (college_id) ON DELETE CASCADE
 );
 
 CREATE TABLE student_groups (

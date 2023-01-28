@@ -1,47 +1,41 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const port = 5000;
+require("dotenv").config();
 
-//Routes
-const collegeRoutes = require("./src/college/routes");
-const classroomRoutes = require("./src/classroom/routes");
+//Route imports
+const authRoutes = require("./authentication/jwtAuth");
+const collegeBlocks = require("./src/blocks/blockRouter");
+const collegeModules = require("./src/modules/moduleRouter");
+const collegeFaculties = require("./src/faculties/facultyRouter");
+const collegeTeachers = require("./src/teachers/teacherRouter");
+const collegeCapacities = require("./src/capacities/capacityRouter");
+const collegeStudentGroups = require("./src/studentGroups/studentGroupRouter");
+const collegeClassrooms = require("./src/classroom/classroomRouer");
+
+const eventsFileSystem = require("./fileSystem/eventsFileSystem");
 
 //Middleware
 app.use(express.json());
+app.use(cors());
 
-//Home page indication
+//ROUTES
+app.use("/authentication", authRoutes);
+app.use("/block", collegeBlocks);
+app.use("/module", collegeModules);
+app.use("/faculty", collegeFaculties);
+app.use("/teacher", collegeTeachers);
+app.use("/capacity", collegeCapacities);
+app.use("/studentGroup", collegeStudentGroups);
+app.use("/classroom", collegeClassrooms);
+
+app.use("/filesystem", eventsFileSystem);
+
+//Root Route test
 app.get("/", (req, res) => {
   res.send(`Hello world`);
 });
 
-//College account Endpoints
-app.use("/api/v1/colleges", collegeRoutes);
-
-//Classroom Endpoint
-app.use("/api/v1/classrooms", classroomRoutes);
-
-/* //Blocks Endpoint
-app.use("/api/v1/blocks", blockRoutes);
-
-//Capacites Route
-app.use("/api/v1/capacities", capacityRoutes);
-
-//faculties Route
-app.use("/api/v1/faculties", facultyRoutes);
-
-//faculty modules Route
-app.use("/api/v1/faculty-modules", facultyModuleRoutes);
-
-//modules Route
-app.use("/api/v1/Modules", moduleRoutes);
-
-//Student groups Route
-app.use("/api/v1/student-groups", studentGroupRoutes);
-
-//Teachers Routes
-app.use("/api/v1/teachers", teacherRoutes);
-
-//Teacher modules route
-app.use("/api/v1/teacher-modules", teacherModuleRoutes); */
-
+//Port activity test
 app.listen(port, () => console.log("the port is listening"));

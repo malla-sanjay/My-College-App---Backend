@@ -1,0 +1,17 @@
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
+function jwtGenerator(college_id, college_name, email, admin_name) {
+  const payload = {
+    user: {
+      id: college_id,
+      college: college_name,
+      admin: admin_name,
+      email: email,
+    },
+  };
+
+  return jwt.sign(payload, process.env.JWT_KEY, { expiresIn: "1h" });
+}
+
+module.exports = jwtGenerator;
