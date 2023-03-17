@@ -15,6 +15,7 @@ const collegeStudentGroups = require("./src/studentGroups/studentGroupRouter");
 const collegeClassrooms = require("./src/classroom/classroomRouer");
 
 const eventsFileSystem = require("./fileSystem/eventsFileSystem");
+const classesFileSystem = require("./fileSystem/classesFileSystem");
 
 //Middleware
 app.use(express.json());
@@ -31,6 +32,7 @@ app.use("/studentGroup", collegeStudentGroups);
 app.use("/classroom", collegeClassrooms);
 
 app.use("/filesystem", eventsFileSystem);
+app.use("/filesystem", classesFileSystem);
 
 //Root Route test
 app.get("/", (req, res) => {

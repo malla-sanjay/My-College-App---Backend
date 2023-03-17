@@ -1,1 +1,30 @@
-[{}]
+[
+  {
+    "id": "na3pt",
+    "title": "Title",
+    "date": "2023-04-04T07:20:47.000Z",
+    "description": "Hwllow rodksdfds",
+    "faculty": "CS"
+  },
+  {
+    "id": "dv6co",
+    "title": "A",
+    "date": "2023-04-09T07:35:59.478Z",
+    "description": "sdfdsfdsfsdfsdfdsfsdfs dfsdfsdfsdfsdfsdfsdfsdfsd",
+    "faculty": "All"
+  },
+  {
+    "id": "nrjga",
+    "title": "Z",
+    "date": "2023-04-09T07:35:59.478Z",
+    "description": "sdfdsfdsfsdfsdfdsfsdfs dfsdfsdfsdfsdfsdfsdfsdfsd",
+    "faculty": "All"
+  },
+  {
+    "id": "75ssj",
+    "title": "B",
+    "date": "2023-04-10T07:46:32.706Z",
+    "description": "Hello this is also a dummy text I am sorry for this sir bie\n",
+    "faculty": "CS"
+  }
+]

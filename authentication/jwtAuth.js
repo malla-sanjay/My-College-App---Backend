@@ -202,4 +202,19 @@ router.post("/updateAccount", authorize, (req, res) => {
   }
 });
 
+router.get("/getColleges", (req, res) => {
+  try {
+    pool.query(queries.getAllColleges, (err, result) => {
+      if (err) throw err;
+      res.json({
+        error: false,
+        message: "successfully retrieved all colleges",
+        data: result.rows,
+      });
+    });
+  } catch (err) {
+    res.json({ error: true, message: err.message });
+  }
+});
+
 module.exports = router;

@@ -3,14 +3,14 @@ const fs = require("fs");
 const path = require("path");
 const router = express.Router();
 
-router.get("/events/:fileName", (req, res) => {
+router.get("/classes/:fileName", (req, res) => {
   const fileName = req.params.fileName;
   const filePath = path.join(
     __dirname,
     "..",
     "schedules",
-    "eventsSchedules",
-    `${fileName}_events.json`
+    "classesSchedules",
+    `${fileName}_classes.json`
   );
 
   // Check if file exists
@@ -32,14 +32,14 @@ router.get("/events/:fileName", (req, res) => {
   }
 });
 
-router.post("/events/:fileName", (req, res) => {
+router.post("/classes/:fileName", (req, res) => {
   const fileName = req.params.fileName;
   const filePath = path.join(
     __dirname,
     "..",
     "schedules",
-    "eventsSchedules",
-    `${fileName}_events.json`
+    "classesSchedules",
+    `${fileName}_classes.json`
   );
 
   // Check if file exists
@@ -64,14 +64,14 @@ router.post("/events/:fileName", (req, res) => {
   });
 });
 
-router.put("/events/:fileName", (req, res) => {
+router.put("/classes/:fileName", (req, res) => {
   const fileName = req.params.fileName;
   const filePath = path.join(
     __dirname,
     "..",
     "schedules",
-    "eventsSchedules",
-    `${fileName}_events.json`
+    "classesSchedules",
+    `${fileName}_classes.json`
   );
 
   // Check if file exists
@@ -85,16 +85,23 @@ router.put("/events/:fileName", (req, res) => {
     const jsonData = JSON.parse(fileContents);
     const newJsonData = req.body;
 
-    // Append new data to the existing array
-    if (Array.isArray(newJsonData)) {
-      jsonData.push(...newJsonData);
-    } else if (typeof newJsonData === "object") {
-      jsonData.push(newJsonData);
-    } else {
+    // Check for duplicates based on composite key
+    const isDuplicate = jsonData.some((data) => {
+      return (
+        data.classroom === newJsonData.classroom &&
+        data.dayOfWeek === newJsonData.dayOfWeek &&
+        data.startingTime === newJsonData.startingTime
+      );
+    });
+
+    if (isDuplicate) {
       return res
         .status(400)
-        .json({ error: true, message: "Invalid Data type" });
+        .json({ error: true, message: "Duplicate data not allowed" });
     }
+
+    // Append new data to the existing array
+    jsonData.push(newJsonData);
 
     // Write the updated data to the file
     fs.writeFile(filePath, JSON.stringify(jsonData), (err) => {
@@ -116,16 +123,17 @@ router.put("/events/:fileName", (req, res) => {
   }
 });
 
-router.delete("/events/:college_id/:id", (req, res) => {
-  const fileName = req.params.college_id;
+router.delete("/classes/:fileName/:id", (req, res) => {
+  const fileName = req.params.fileName;
   const filePath = path.join(
     __dirname,
     "..",
     "schedules",
-    "eventsSchedules",
-    `${fileName}_events.json`
+    "classesSchedules",
+    `${fileName}_classes.json`
   );
   const id = req.params.id;
+  console.log(id);
 
   // Check if file exists
   if (!fs.existsSync(filePath)) {
@@ -134,10 +142,11 @@ router.delete("/events/:college_id/:id", (req, res) => {
 
   // Read the file contents
   const fileContents = fs.readFileSync(filePath, "utf8");
+  console.log(fileContents);
 
   try {
     const jsonData = JSON.parse(fileContents);
-    const index = jsonData.findIndex((obj) => obj.id === id);
+    const index = jsonData.findIndex((obj) => obj.id == id);
 
     if (index === -1) {
       return res.status(404).json({ error: true, message: "Object Not found" });
